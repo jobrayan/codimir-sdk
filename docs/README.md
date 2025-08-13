@@ -1,127 +1,102 @@
-# Codimir – Modern Test Management Platform
+# Codimir SDK  
+[![NPM Version](https://img.shields.io/npm/v/codimir-sdk?color=blue)](https://www.npmjs.com/package/codimir-sdk)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](LICENSE)
+[![Build](https://github.com/jobrayan/codimir-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/jobrayan/codimir-sdk/actions)
+[![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](./docs)
 
-Codimir is a scalable, developer-friendly alternative to TestRail—built with Next.js, shadcn/ui, Tailwind CSS, and Prisma ORM.  
-It empowers teams to manage test cases, document QA processes, track results, and gain real-time insights—**all with beautiful, customizable UI and extensible architecture.**
-
----
-
-## ✅ Core Features
-
-| Module       | Description                                                         |
-|--------------|---------------------------------------------------------------------|
-| Projects     | Group related test suites and test cases.                           |
-| Test Suites  | Collections of test cases organized by feature or module.           |
-| Test Cases   | Steps, expected results, priority, tags, markdown editing.          |
-| Test Runs    | Execute test cases under specific runs (regression, smoke, etc).    |
-| Test Results | Status (passed, failed, blocked), comments, historical tracking.    |
-| User Roles   | Admins, Testers, Viewers with RBAC (role-based access control).     |
-| Dashboard    | Visual overview: coverage, run status, failed cases, analytics.     |
-| Docs         | Markdown-based knowledge base for projects, suites, and cases.      |
-| Attachments  | (Planned) Add screenshots and files to test cases.                  |
-| Automation   | (Planned) Playwright/Cypress result sync via API.                   |
+Codimir SDK is an **open-source TypeScript library** that allows you to integrate with the [Codimir Work Management Platform](https://codimir.com) to create, manage, and track tickets.  
+It is designed for developers building integrations with **AI-assisted workflows**, **AI IDEs**, **Cascade ticketing**, and tools like VS Code, CLI, and Slack.
 
 ---
 
-## 💡 Tech Stack
+## 🚀 What Can You Do with Codimir SDK?
 
-| Layer      | Technology                                                   |
-|------------|-------------------------------------------------------------|
-| Frontend   | Next.js 15 (App Router), TailwindCSS, shadcn/ui             |
-| State      | Zustand or React Context                                    |
-| Auth       | NextAuth.js (email, Google)                                 |
-| Backend    | Next.js API routes (optionally: NestJS microservices)       |
-| Database   | PostgreSQL (Prisma ORM)                                     |
-| Charts     | Recharts                                                    |
-| CI/CD      | GitHub Actions, Vercel, or your choice                      |
-| Automation | (Optional) Playwright/Cypress integration                   |
+- **Create & Manage Tickets** — Generate tickets from your app, CLI, or IDE with references like `tck_<id>`.
+- **AI Integration** — Collaborate with Codimir’s AI to refine requirements, track progress, and suggest solutions.
+- **Cascade Support** — Automatically link tickets created in Cascade to Codimir’s backend.
+- **Authentication** — Works with the Codimir web app’s authentication (Next.js `/web` full-stack backend).
+- **Cross-Platform Integrations** — Works in VS Code extensions, CLI tools, Slack bots, or any Node.js service.
+- **Extensible Architecture** — Add your own automation and integrations.
 
-## ✨ Advanced & Optional Features
+---
 
-- **API endpoints:** Playwright/Cypress result uploads
-- **Recharts:** Test coverage charts
-- **Execution time tracking:** Flakiness analysis
-- **Attachments:** Screenshots, logs (planned)
-- **Search & filtering:** Tagging, search for test cases
-- **Audit logs:** Edits and results
-- **Integrations & Tooling:**
-  - **Automation Sync:** GitHub Actions, Playwright Reporter
-  - **Test Case Import:** CSV Upload Tool
-  - **Notification:** Slack or Email (planned)
-  - **AI Assistance:** GPT integration (planned)
+## 📦 Installation
 
-## 🏁 Getting Started
+```bash
+# Using npm
+npm install codimir-sdk
 
-1. Clone the repository
-2. Install dependencies: `pnpm install` (or `npm install`)
-3. Setup environment variables: See [ENVIRONMENT.md](./ENVIRONMENT.md)
-4. Run migrations: `pnpm prisma migrate dev`
-5. Start the dev server: `pnpm dev`
-6. Login and start adding your projects and test cases!
+# Using pnpm
+pnpm add codimir-sdk
 
-For detailed installation and usage, see [docs](./docs).
+# Using yarn
+yarn add codimir-sdk
+```
 
-## 📚 Learn More
+---
 
-- [Features](./docs/FEATURES.md)
-- [Architecture](./docs/ARCHITECTURE.md)
-- [Roadmap](./docs/ROADMAP.md)
-- [Docs Entry](./docs/WINDDOCS.md)
+## 🔑 Quick Start
+
+```ts
+import { CodimirClient } from "codimir-sdk";
+
+const client = new CodimirClient({
+  apiKey: process.env.CODIMIR_API_KEY,
+});
+
+// Create a ticket
+const ticket = await client.tickets.create({
+  title: "Fix login error",
+  description: "Users cannot log in after password reset",
+  priority: "High",
+});
+
+console.log("Ticket created:", ticket.id);
+```
+
+---
+
+## 🧩 Example Integrations
+
+| Integration  | Description |
+|--------------|-------------|
+| **VS Code Extension** | Create tickets directly from your code editor. |
+| **CLI Tool** | `codimir create-ticket` command to quickly log issues. |
+| **Slack Bot** | Create & assign tickets from Slack messages. |
+| **Cascade AI IDE** | AI-suggested tickets with `tck_` references auto-linked. |
+
+---
+
+## 📚 Documentation
+
+### 📖 **Getting Started**
+- **[Installation Guide](./docs/INSTALL.md)** - Complete setup instructions
+- **[Usage Examples](./docs/USAGE.md)** - Code examples and common patterns
+- **[Environment Setup](./docs/ENVIRONMENT.md)** - Configuration and environment variables
+
+### 🏗️ **Architecture & Design**  
+- **[SDK Foundation](./docs/sdk-foundation.md)** - Core architecture and design principles
+- **[System Architecture](./docs/ARCHITECTURE.md)** - Overall system design
+- **[Features Overview](./docs/FEATURES.md)** - Detailed feature documentation
+
+### 🔧 **Development**
+- **[Contributing Guide](./docs/CONTRIBUTING.md)** - How to contribute to the project
+- **[Scripts & Commands](./docs/SCRIPTS.md)** - Available development scripts
+- **[Security Guidelines](./docs/SECURITY.md)** - Security best practices
+
+### 📋 **Reference**
+- **[Changelog](./docs/CHANGELOG.md)** - Version history and updates  
+- **[Roadmap](./docs/ROADMAP.md)** - Future development plans
+- **[Glossary](./docs/GLOSSARY.md)** - Terms and definitions
+- **[Goal & Vision](./docs/GOAL.md)** - Project goals and vision
+
+---
 
 ## 🤝 Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md).
+We welcome contributions! Please read our [CONTRIBUTING.md](./docs/CONTRIBUTING.md) before submitting a PR.
 
-## License
-MIT
+---
 
-## 🧱 Example Prisma Schema
-
-<details>
-<summary>Click to expand schema</summary>
-
-```prisma
-model Project {
-  id          String    @id @default(cuid())
-  name        String
-  description String?
-  testSuites  TestSuite[]
-}
-
-model TestSuite {
-  id        String     @id @default(cuid())
-  title     String
-  project   Project    @relation(fields: [projectId], references: [id])
-  projectId String
-  testCases TestCase[]
-}
-
-model TestCase {
-  id           String   @id @default(cuid())
-  title        String
-  description  String?
-  steps        String
-  expected     String
-  priority     String
-  suite        TestSuite @relation(fields: [suiteId], references: [id])
-  suiteId      String
-}
-
-model TestRun {
-  id        String     @id @default(cuid())
-  suite     TestSuite  @relation(fields: [suiteId], references: [id])
-  suiteId   String
-  startedAt DateTime   @default(now())
-  results   TestResult[]
-}
-
-model TestResult {
-  id        String   @id @default(cuid())
-  testCase  TestCase @relation(fields: [testCaseId], references: [id])
-  testCaseId String
-  testRun    TestRun  @relation(fields: [testRunId], references: [id])
-  testRunId  String
-  status     String   // e.g. passed, failed, blocked
-  comment    String?
-  createdAt  DateTime @default(now())
-}
-</details>
+## 📄 License
+This project is licensed under the [AGPL-3.0 License](LICENSE).
