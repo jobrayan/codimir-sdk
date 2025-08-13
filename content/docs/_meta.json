@@ -1,0 +1,12 @@
+{
+  "index": "Overview",
+  "get-started": "Get Started",
+  "api": {
+    "title": "API Reference",
+    "type": "menu",
+    "items": {
+      "overview": "Overview"
+    }
+  },
+  "faq": "FAQ"
+}

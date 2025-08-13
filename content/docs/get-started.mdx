@@ -1,0 +1,25 @@
+# Get Started
+
+This guide gets you from zero → first task in minutes.
+
+## 1) Install the SDK
+
+```bash
+pnpm add @codimir/sdk
+```
+
+## 2) Create a task (client)
+
+```ts
+import { createTask } from '@codimir/sdk'
+
+await createTask({
+  title: 'Hello Codimir',
+  description: 'My first OSS task',
+  assigneeId: 'user_123'
+})
+```
+
+## 3) Run server locally
+
+See Self-Host → Docker Compose for a one-command setup.

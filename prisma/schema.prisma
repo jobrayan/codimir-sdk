@@ -1,0 +1,121 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  role          Role      @default(VIEWER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  projects      Project[]
+  accounts      Account[]
+  sessions      Session[]
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+  VIEWER
+}
+
+model Project {
+  id        String     @id @default(cuid())
+  name      String
+  description String?
+  ownerId   String
+  owner     User       @relation(fields: [ownerId], references: [id])
+  testSuites TestSuite[]
+  docs      Doc[]
+}
+
+model TestSuite {
+  id        String   @id @default(cuid())
+  name      String
+  project   Project  @relation(fields: [projectId], references: [id])
+  projectId String
+  testCases TestCase[]
+  docs      Doc[]
+}
+
+model TestCase {
+  id         String   @id @default(cuid())
+  title      String
+  steps      String   // Markdown
+  expected   String   // Markdown
+  suite      TestSuite @relation(fields: [suiteId], references: [id])
+  suiteId    String
+  status     String   // draft, active, deprecated
+  priority   String   // low, medium, high, critical
+  attachments Attachment[]
+  docs       Doc[]
+}
+
+model Attachment {
+  id        String   @id @default(cuid())
+  url       String
+  testCase  TestCase @relation(fields: [testCaseId], references: [id])
+  testCaseId String
+  uploadedAt DateTime @default(now())
+}
+
+model Doc {
+  id        String   @id @default(cuid())
+  title     String
+  content   String   // Markdown
+  project   Project? @relation(fields: [projectId], references: [id])
+  projectId String?
+  suite     TestSuite? @relation(fields: [suiteId], references: [id])
+  suiteId   String?
+  case      TestCase? @relation(fields: [caseId], references: [id])
+  caseId    String?
+}
